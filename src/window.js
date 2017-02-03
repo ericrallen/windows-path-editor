@@ -59,7 +59,8 @@ app.on('will-finish-launching', () => {
       method: 'GET',
       path: '/path',
       handler(request, reply) {
-        const paths = env.Path.split(';');
+        // use a Set to filter out duplicates so we don't end up polluting the $PATH
+        const paths = [...new Set(env.Path.split(';'))];
 
         reply({ paths });
       },

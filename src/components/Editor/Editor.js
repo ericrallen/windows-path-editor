@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 import Title from '../Title/Title';
-import PathItem from '../PathItem/PathItem';
+import CharacterCount from '../CharacterCount/CharacterCount';
+import PathList from '../PathList/PathList';
 
 /**
  * @class Editor
@@ -14,15 +15,18 @@ class Editor extends Component {
    * @memberof Editor
    * @description initialize component
    * @param {Object} props properties to pass to this Component
-   * @param {OBject} context component context
+   * @param {Object} context component context
    * @returns new instance of Editor Component
    */
   constructor(props, context) {
     super(props, context);
 
+    this.onInput = this.onInput.bind(this);
+
     // initialize empty state
     this.state = {
       pathArray: [],
+      pathString: '',
     };
   }
 
@@ -38,22 +42,49 @@ class Editor extends Component {
         // get paths Array from JSON response
         const { paths } = json;
 
-        // get pathArray from current state
-        let { pathArray } = this.state;
+        // update pathArray and pathString in state
+        let { pathArray, pathString } = this.state;
 
-        // override pathArray with retrieved state
         pathArray = paths;
 
-        // update pathArray state
+        pathString = paths.join(';');
+
         this.setState({
           pathArray,
+          pathString,
         });
       }),
     );
   }
 
-  onChange(e) {
-    console.log(e);
+  /**
+   * @method onInput
+   * @memberof Editor
+   * @description respond to input event and update state
+   * @param {Event} e input event passed by onInput React handler
+   */
+  onInput(e) {
+    // get event target
+    const { target } = e;
+
+    // get new value
+    const { value } = target;
+
+    // get index for item in our $PATH array from id attribute, EX: path-item-0
+    const index = target.id.split('-').pop();
+
+    // update pathArray and pathString in state
+    const { pathArray } = this.state;
+    let { pathString } = this.state;
+
+    pathArray[index] = value;
+
+    pathString = pathArray.join(';');
+
+    this.setState({
+      pathArray,
+      pathString,
+    });
   }
 
   /**
@@ -62,21 +93,11 @@ class Editor extends Component {
    * @description render our Editor Component
    */
   render() {
-    // iterate through $PATHs and create inputs
-    const entries = this.state.pathArray.map((item) => {
-      if (item) {
-        return (
-          <PathItem path={item} change={this.onChange} />
-        );
-      }
-    });
-
     return (
       <section className="application">
         <Title title="$PATH Editor" />
-        <ul className="path-list">
-          {(entries)}
-        </ul>
+        <CharacterCount chars={this.state.pathString.length} />
+        <PathList paths={this.state.pathArray} change={this.onInput} />
       </section>
     );
   }
