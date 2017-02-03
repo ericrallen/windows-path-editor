@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+import Title from '../Title/Title';
+import PathItem from '../PathItem/PathItem';
+
 /**
  * @class Editor
  * @extends Component
@@ -16,9 +19,6 @@ class Editor extends Component {
    */
   constructor(props, context) {
     super(props, context);
-
-    // get props and store them locally
-    this.props = props;
 
     // initialize empty state
     this.state = {
@@ -52,6 +52,10 @@ class Editor extends Component {
     );
   }
 
+  onChange(e) {
+    console.log(e);
+  }
+
   /**
    * @method render
    * @memberof Editor
@@ -59,17 +63,18 @@ class Editor extends Component {
    */
   render() {
     // iterate through $PATHs and create inputs
-    const entries = this.state.pathArray.map((item, index) => {
+    const entries = this.state.pathArray.map((item) => {
       if (item) {
         return (
-          <li key={`path-${index}`}><input type="text" value={item} /></li>
+          <PathItem path={item} change={this.onChange} />
         );
       }
     });
 
     return (
-      <section>
-        <ul>
+      <section className="application">
+        <Title title="$PATH Editor" />
+        <ul className="path-list">
           {(entries)}
         </ul>
       </section>
