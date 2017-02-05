@@ -5,6 +5,24 @@ import CharacterCount from '../CharacterCount/CharacterCount';
 import PathList from '../PathList/PathList';
 
 /**
+ * @method getIndexFromID
+ * @description take a formatted ID string like path-item-1 and convert it into the relevant index
+ * @param {String} id the ID string
+ */
+function getIndexFromID(id) {
+  return id.split('-').pop();
+}
+
+/**
+ * @method generatePathString
+ * @description take path object and reduce it to colon-separated $PATH string
+ * @param {Object} pathObject an object of path strings with arbitrary keys
+ */
+function generatePathString(pathObject = {}) {
+  return Object.keys(pathObject).map(index => pathObject[index]).join(';');
+}
+
+/**
  * @class Editor
  * @extends Component
  * @description $PATH Editor application container
@@ -22,10 +40,11 @@ class Editor extends Component {
     super(props, context);
 
     this.onInput = this.onInput.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
 
     // initialize empty state
     this.state = {
-      pathArray: [],
+      pathObject: {},
       pathString: '',
     };
   }
@@ -42,19 +61,54 @@ class Editor extends Component {
         // get paths Array from JSON response
         const { paths } = json;
 
-        // update pathArray and pathString in state
-        let { pathArray, pathString } = this.state;
+        // update pathObject and pathString in state
+        let { pathObject, pathString } = this.state;
 
-        pathArray = paths;
+        pathObject = paths;
 
-        pathString = paths.join(';');
+        pathString = generatePathString(pathObject);
 
         this.setState({
-          pathArray,
+          pathObject,
           pathString,
         });
       }),
     );
+  }
+
+  /**
+   * @method onSubmit
+   * @memberof Editor
+   * @description delete item from $PATH
+   * @param {Event} e click event passed on by onClick React handler
+   */
+  onSubmit(e) {
+    // prevent reload from form submission
+    e.preventDefault();
+
+    // get event target
+    const { target } = e;
+
+    // get target id
+    const { id } = target;
+
+    // get index for our $PATH item from id attribute
+    const index = getIndexFromID(id);
+
+    // update pathObject and pathString in state
+    const { pathObject } = this.state;
+    let { pathString } = this.state;
+
+    delete pathObject[index];
+
+    pathString = generatePathString(pathObject);
+
+    this.setState({
+      pathObject,
+      pathString,
+    });
+
+    return false;
   }
 
   /**
@@ -68,23 +122,25 @@ class Editor extends Component {
     const { target } = e;
 
     // get new value
-    const { value } = target;
+    const { value, id } = target;
 
-    // get index for item in our $PATH array from id attribute, EX: path-item-0
-    const index = target.id.split('-').pop();
+    // get index for item in our $PATH array from id attribute
+    const index = getIndexFromID(id);
 
-    // update pathArray and pathString in state
-    const { pathArray } = this.state;
+    // update pathObject and pathString in state
+    const { pathObject } = this.state;
     let { pathString } = this.state;
 
-    pathArray[index] = value;
+    pathObject[index] = value;
 
-    pathString = pathArray.join(';');
+    pathString = generatePathString(pathObject);
 
     this.setState({
-      pathArray,
+      pathObject,
       pathString,
     });
+
+    return true;
   }
 
   /**
@@ -97,7 +153,7 @@ class Editor extends Component {
       <section className="application">
         <Title title="$PATH Editor" />
         <CharacterCount chars={this.state.pathString.length} />
-        <PathList paths={this.state.pathArray} change={this.onInput} />
+        <PathList paths={this.state.pathObject} change={this.onInput} submit={this.onSubmit} />
       </section>
     );
   }

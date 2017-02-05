@@ -7,6 +7,7 @@ const Path = require('path');
 const open = require('open');
 const inert = require('inert');
 const joi = require('joi');
+const uuid = require('uuid-lib');
 
 const {
   app,
@@ -59,9 +60,20 @@ app.on('will-finish-launching', () => {
       method: 'GET',
       path: '/path',
       handler(request, reply) {
-        // use a Set to filter out duplicates so we don't end up polluting the $PATH
-        const paths = [...new Set(env.Path.split(';'))];
+        const paths = {};
 
+        // use a Set to filter out duplicates so we don't end up polluting the $PATH
+        // run Array.prototype.filter() to remove any empty items (usually caused by the split character appearing at the end of the string)
+        // iterate through items
+        [...new Set(env.Path.split(';').filter(item => !!item))].forEach((item) => {
+          // generate a UUID for each item
+          const ID = uuid.create();
+
+          // store path with UUID as key
+          paths[ID.value] = item;
+        });
+
+        // return path JSON
         reply({ paths });
       },
     });

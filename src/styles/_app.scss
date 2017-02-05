@@ -33,14 +33,38 @@ body {
     list-style-type: none;
 
     &-item{
+      position: relative;
+
       &:not(:last-child) {
         margin-bottom: 10px;
       }
 
       &-input {
         width: 100%;
-        padding: 10px;
+        padding: 10px 58px 10px 10px;
         border: 1px solid #ccc;
+      }
+
+      &-button {
+        position: absolute;
+        right: 0;
+        width: 48px;
+        height: 100%;
+        border: none;
+        font-weight: bold;
+        line-height: 40px;
+        text-align: center;
+        vertical-align: middle;
+        opacity: 0.6;
+        color: #f7f7f7;
+        background-color: red;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &:focus,
+        &:hover {
+          opacity: 1.0;
+        }
       }
     }
   }

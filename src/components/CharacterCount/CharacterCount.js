@@ -5,10 +5,10 @@ import React from 'react';
  * @description Component for displaying character count
  * @param {Object} props properties passed to Component
  */
-function CharacterCount(props) {
+function CharacterCount({ chars }) {
   return (
     <div className="application-character-count">
-      <p>{props.chars} Characters</p>
+      <p>{chars} Characters</p>
     </div>
   );
 }

@@ -7,30 +7,27 @@ import PathItem from '../PathItem/PathItem';
  * @description Component for displaying list of path items
  * @param {Object} props properties passed to Component
  */
-function PathList(props) {
-  const { change } = props;
-
+function PathList({ change, submit, paths = {} }) {
   // iterate through $PATHs and create list items with inputs
-  const entries = props.paths.map((item, index) => {
-    if (item) {
-      return (
-        <PathItem key={`path-string-${index}`} path={item} change={change} index={index} />
-      );
-    }
+  const entries = Object.keys(paths).map((item) => {
+    const path = paths[item];
 
-    return false;
+    return (
+      <PathItem key={`path-string-${item}`} path={path} change={change} submit={submit} index={item} />
+    );
   });
 
   return (
     <ul className="path-list">
-      {(entries)}
+      {entries}
     </ul>
   );
 }
 
 PathList.propTypes = {
-  paths: React.PropTypes.array,
+  paths: React.PropTypes.object,
   change: React.PropTypes.func,
+  submit: React.PropTypes.func,
 };
 
 export default PathList;

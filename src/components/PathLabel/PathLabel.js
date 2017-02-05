@@ -5,14 +5,14 @@ import React from 'react';
  * @description Component for displaying label for path item input
  * @param {Object} props properties passed to Component
  */
-function PathLabel(props) {
+function PathLabel({ index }) {
   return (
-    <label className="path-list-item-label visually-hidden" htmlFor={`path-item-${props.index}`}>Path Entry {props.index + 1}</label>
+    <label className="path-list-item-label visually-hidden" htmlFor={`path-item-${index}`}>Path Entry {index + 1}</label>
   );
 }
 
 PathLabel.propTypes = {
-  index: React.PropTypes.number,
+  index: React.PropTypes.string,
 };
 
 export default PathLabel;

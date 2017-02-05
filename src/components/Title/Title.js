@@ -5,9 +5,9 @@ import React from 'react';
  * @description Component for displaying application title
  * @param {Object} props properties passed to Component
  */
-function Title(props) {
+function Title({ title }) {
   return (
-    <h1 className="application-title">{props.title}</h1>
+    <h1 className="application-title">{title}</h1>
   );
 }
 
