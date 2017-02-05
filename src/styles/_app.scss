@@ -25,6 +25,23 @@ body {
   font-family: system, -apple-system, ".SFNSText-Regular", "San Francisco", "Roboto", "Segoe UI", "Helvetica Neue", "Lucida Grande", sans-serif;
 }
 
+.application {
+  padding-left: 15%;
+
+  &-container {
+    width: 100%;
+    position: relative;
+  }
+
+  &-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 15%;
+    padding: 20px;
+  }
+}
+
 .path {
   &-list {
     width: 100%;

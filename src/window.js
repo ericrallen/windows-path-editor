@@ -103,12 +103,24 @@ app.on('will-finish-launching', () => {
       },
     });
 
+    // get new UUID for adding item to $PATH
+    server.route({
+      method: 'GET',
+      path: '/new',
+      handler(request, reply) {
+        // genereate new UUID
+        const ID = uuid.create();
+
+        reply({ ID });
+      },
+    });
+
     // allow the app to call a reboot
     // we need to reboot after updating the $PATH or it won't be available
     server.route({
       method: 'GET',
       path: '/reboot',
-      handler(request, reply) {
+      handler() {
         exec('shutdown -r -t 30');
       },
     });

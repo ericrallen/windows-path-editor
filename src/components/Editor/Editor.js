@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Title from '../Title/Title';
 import CharacterCount from '../CharacterCount/CharacterCount';
 import PathList from '../PathList/PathList';
+import SideBar from '../SideBar/SideBar';
 
 /**
  * @method getIndexFromID
@@ -41,11 +42,20 @@ class Editor extends Component {
 
     this.onInput = this.onInput.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onAddPath = this.onAddPath.bind(this);
 
     // initialize empty state
     this.state = {
       pathObject: {},
       pathString: '',
+    };
+
+    this.sideBarActions = {
+      add: {
+        display: '+',
+        ada: 'Add New Path',
+        action: this.onAddPath,
+      },
     };
   }
 
@@ -72,8 +82,24 @@ class Editor extends Component {
           pathObject,
           pathString,
         });
-      }),
-    );
+      }))
+    ;
+  }
+
+  onAddPath() {
+    fetch('/new')
+      .then(response => response.json().then((json) => {
+        const { ID } = json;
+
+        const { pathObject } = this.state;
+
+        pathObject[ID] = '';
+
+        this.setState({
+          pathObject,
+        });
+      }))
+    ;
   }
 
   /**
@@ -150,10 +176,13 @@ class Editor extends Component {
    */
   render() {
     return (
-      <section className="application">
-        <Title title="$PATH Editor" />
-        <CharacterCount chars={this.state.pathString.length} />
-        <PathList paths={this.state.pathObject} change={this.onInput} submit={this.onSubmit} />
+      <section className="application-container">
+        <SideBar actions={this.sideBarActions} />
+        <section className="application">
+          <Title title="$PATH Editor" />
+          <CharacterCount chars={this.state.pathString.length} />
+          <PathList paths={this.state.pathObject} change={this.onInput} submit={this.onSubmit} />
+        </section>
       </section>
     );
   }
