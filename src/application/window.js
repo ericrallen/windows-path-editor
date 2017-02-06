@@ -71,7 +71,7 @@ app.on('will-finish-launching', () => {
           const ID = uuid.create();
 
           // store path with UUID as key
-          paths[ID.value] = item;
+          paths[ID.value] = Path.normalize(item);
         });
 
         // return path JSON
@@ -79,26 +79,31 @@ app.on('will-finish-launching', () => {
       },
     });
 
-    // updated $PATH
+    // update $PATH
     server.route({
       method: 'POST',
       path: '/path',
-      handler(request, reply) {
-        const paths = request.payload.paths;
+      handler({ payload: { paths } }, reply) {
+        const pathArray = [];
 
-        // we use setx to make the $PATH modification
-        exec(`setx Path "${paths.join(';')}"`, (status) => {
+        const pathObject = JSON.parse(paths);
+
+        Object.keys(pathObject).forEach(key => pathArray.push(Path.normalize(pathObject[key])));
+
+        // we use setx to make the $PATH modification after combining the pathArray into a single $PATH string
+        // we'll add an extra ";" at the end to deal with a final path that ends in a special character
+        exec(`setx Path "${pathArray.join(';')};"`, { async: true }, (status) => {
           if (status === 0) {
-            reply(true);
+            reply({ ok: 1 });
           } else {
-            reply(false);
+            reply({ ok: 0 });
           }
         });
       },
       config: {
         validate: {
           params: {
-            paths: joi.array(),
+            paths: joi.object(),
           },
         },
       },

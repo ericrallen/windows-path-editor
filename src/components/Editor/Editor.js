@@ -29,13 +29,7 @@ function generatePathString(pathObject = {}) {
  */
 function onReboot() {
   fetch('/reboot')
-    .then(response => response.json().then((json) => {
-      if (json.ok) {
-        return true;
-      }
-
-      return false;
-    }))
+    .then(response => response.json().then(({ ok }) => !!ok))
   ;
 }
 
@@ -45,13 +39,7 @@ function onReboot() {
  */
 function onExit() {
   fetch('/quit')
-    .then(response => response.json().then((json) => {
-      if (json.ok) {
-        return true;
-      }
-
-      return false;
-    }))
+    .then(response => response.json().then(({ ok }) => !!ok))
   ;
 }
 
@@ -75,6 +63,7 @@ class Editor extends Component {
     this.onInput = this.onInput.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onAddPath = this.onAddPath.bind(this);
+    this.onUpdatePath = this.onUpdatePath.bind(this);
 
     // initialize empty state
     this.state = {
@@ -91,6 +80,15 @@ class Editor extends Component {
         ada: ' New Path',
         action: this.onAddPath,
       }
+    );
+
+    this.sideBarActions.set(
+      'update',
+      {
+        display: 'Update',
+        ada: ' and save changes to your $PATH',
+        action: this.onUpdatePath,
+      },
     );
 
     this.sideBarActions.set(
@@ -157,6 +155,28 @@ class Editor extends Component {
           pathObject,
         });
       }))
+    ;
+  }
+
+  /**
+   * @method onUpdatePath
+   * @memberof Editor
+   * @description push POST data to /path to update $PATH
+   */
+  onUpdatePath() {
+    const { pathObject } = this.state;
+
+    const data = new FormData();
+
+    data.append('paths', JSON.stringify(pathObject));
+
+    const requestFormat = {
+      method: 'POST',
+      body: data,
+    };
+
+    fetch('/path', requestFormat)
+      .then(response => response.json().then(({ ok }) => !!ok))
     ;
   }
 
