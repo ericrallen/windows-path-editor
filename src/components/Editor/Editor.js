@@ -24,6 +24,22 @@ function generatePathString(pathObject = {}) {
 }
 
 /**
+ * @method onReboot
+ * @description check if user wants to reboot and then trigger /reboot path
+ */
+function onReboot() {
+  fetch('/reboot')
+    .then(response => response.json().then((json) => {
+      if (json.ok) {
+        return true;
+      }
+
+      return false;
+    }))
+  ;
+}
+
+/**
  * @class Editor
  * @extends Component
  * @description $PATH Editor application container
@@ -52,9 +68,14 @@ class Editor extends Component {
 
     this.sideBarActions = {
       add: {
-        display: '+',
-        ada: 'Add New Path',
+        display: '+ Add',
+        ada: ' New Path',
         action: this.onAddPath,
+      },
+      reboot: {
+        display: 'Reboot',
+        ada: ' your computer for $PATH updates to take effect',
+        action: onReboot,
       },
     };
   }
@@ -86,6 +107,11 @@ class Editor extends Component {
     ;
   }
 
+  /**
+   * @method onAddPath
+   * @memberof Editor
+   * @description get new UUID from application and add it to pathObject
+   */
   onAddPath() {
     fetch('/new')
       .then(response => response.json().then((json) => {

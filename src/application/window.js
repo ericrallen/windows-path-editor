@@ -12,6 +12,7 @@ const uuid = require('uuid-lib');
 const {
   app,
   BrowserWindow,
+  dialog,
 } = electron;
 
 // making this global allows us to work with it in other parts of the Electron app
@@ -120,8 +121,25 @@ app.on('will-finish-launching', () => {
     server.route({
       method: 'GET',
       path: '/reboot',
-      handler() {
-        exec('shutdown -r -t 30');
+      handler(response, reply) {
+        dialog.showMessageBox(
+          {
+            type: 'warning',
+            buttons: ['Cancel', 'Restart'],
+            defaultId: 0,
+            cancelId: 0,
+            title: 'Reboot Warning',
+            message: 'This will restart your computer so that $PATH changes can take effect. Save any work in other open applications before doing this.\n\n Would you like to continue?',
+            noLink: true,
+          },
+          (choice) => {
+            if (choice === 1) {
+              exec('shutdown -r -t 30', { async: true });
+            }
+
+            reply({ ok: choice });
+          })
+        ;
       },
     });
 
