@@ -40,6 +40,22 @@ function onReboot() {
 }
 
 /**
+ * @method onExit
+ * @description trigger application Exit
+ */
+function onExit() {
+  fetch('/quit')
+    .then(response => response.json().then((json) => {
+      if (json.ok) {
+        return true;
+      }
+
+      return false;
+    }))
+  ;
+}
+
+/**
  * @class Editor
  * @extends Component
  * @description $PATH Editor application container
@@ -66,18 +82,34 @@ class Editor extends Component {
       pathString: '',
     };
 
-    this.sideBarActions = {
-      add: {
+    this.sideBarActions = new Map();
+    
+    this.sideBarActions.set(
+      'add',
+      {
         display: '+ Add',
         ada: ' New Path',
         action: this.onAddPath,
-      },
-      reboot: {
+      }
+    );
+
+    this.sideBarActions.set(
+      'reboot',
+      {
         display: 'Reboot',
         ada: ' your computer for $PATH updates to take effect',
         action: onReboot,
-      },
-    };
+      }
+    );
+
+    this.sideBarActions.set(
+      'quit',
+      {
+        display: 'Exit',
+        ada: ' without rebooting',
+        action: onExit,
+      }
+    );
   }
 
   /**

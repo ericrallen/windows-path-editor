@@ -145,6 +145,30 @@ app.on('will-finish-launching', () => {
 
     server.route({
       method: 'GET',
+      path: '/quit',
+      handler(request, reply) {
+        dialog.showMessageBox(
+          {
+            type: 'warning',
+            buttons: ['Cancel', 'OK'],
+            defaultId: 0,
+            cancelId: 0,
+            title: 'Reboot Warning',
+            message: 'Any $PATH changes will not take effect until you restart your computer.',
+          },
+          (choice) => {
+            if (choice === 1) {
+              mainWindow.close();
+            }
+
+            reply({ ok: choice });
+          })
+        ;
+      },
+    });
+
+    server.route({
+      method: 'GET',
       path: '/assets/{filename}',
       handler(request, reply) {
         reply.file(`assets/${request.params.filename}`);

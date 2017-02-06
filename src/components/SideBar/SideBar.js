@@ -3,9 +3,11 @@ import React from 'react';
 import SideBarAction from '../SideBarAction/SideBarAction';
 
 function SideBar({ actions }) {
-  const buttons = Object.keys(actions).map((item) => {
-    return (
-      <SideBarAction key={`action-${item}`} {...actions[item]} />
+  const buttons = [];
+
+  actions.forEach((item, key) => {
+    buttons.push(
+      <SideBarAction key={`action-${key}`} {...item} />
     );
   });
 
@@ -17,7 +19,7 @@ function SideBar({ actions }) {
 }
 
 SideBar.propTypes = {
-  actions: React.PropTypes.object,
+  actions: React.PropTypes.any, //no good type for Map
 };
 
 export default SideBar;
