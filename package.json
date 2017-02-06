@@ -6,14 +6,14 @@
   "main": "app/window.js",
   "scripts": {
     "clean": "cleandir ./app/",
-    "copy:main": "copyfiles -u 1 src/window.js app/",
-    "copy:html": "copyfiles -u 1 src/index.html app/",
+    "copy:main": "copyfiles -u 2 src/application/window.js app/",
+    "copy:html": "copyfiles -u 2 src/application/index.html app/",
     "copy:templates": "copyfiles -u 2 src/templates/package.json app/",
     "electron": "electron .",
     "watch": "webpack --watch",
     "eslint": "npm run lint",
     "build": "npm run clean && webpack -p",
-    "generate": "npm run copy:main & npm run copy:html & npm run copy:templates",
+    "generate": "npm run copy:main & npm run copy:html",
     "start": "npm run generate && npm run electron",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
