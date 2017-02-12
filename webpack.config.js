@@ -4,7 +4,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: {
-    app: './src/application/assets/app.js'
+    app: './src/application/assets/app.js',
   },
   output: {
     path: path.join(__dirname, 'app/assets'),
@@ -24,6 +24,10 @@ module.exports = {
       {
         test: /\.scss$/,
         loader: ExtractTextPlugin.extract('css!sass'),
+      },
+      {
+        test: /\.svg$/,
+        loader: 'babel?presets[]=es2015,presets[]=react!svg-react',
       },
     ],
   },

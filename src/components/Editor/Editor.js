@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 
-import Title from '../Title/Title';
-import CharacterCount from '../CharacterCount/CharacterCount';
 import PathList from '../PathList/PathList';
 import SideBar from '../SideBar/SideBar';
+
+import {
+  PLUS,
+  X,
+  CHECK,
+  REBOOT,
+} from '../Icon/icons/icons';
 
 /**
  * @method getIndexFromID
@@ -79,7 +84,8 @@ class Editor extends Component {
         display: '+ Add',
         ada: ' New Path',
         action: this.onAddPath,
-      }
+        icon: PLUS,
+      },
     );
 
     this.sideBarActions.set(
@@ -88,6 +94,7 @@ class Editor extends Component {
         display: 'Update',
         ada: ' and save changes to your $PATH',
         action: this.onUpdatePath,
+        icon: CHECK,
       },
     );
 
@@ -97,7 +104,8 @@ class Editor extends Component {
         display: 'Reboot',
         ada: ' your computer for $PATH updates to take effect',
         action: onReboot,
-      }
+        icon: REBOOT,
+      },
     );
 
     this.sideBarActions.set(
@@ -106,7 +114,8 @@ class Editor extends Component {
         display: 'Exit',
         ada: ' without rebooting',
         action: onExit,
-      }
+        icon: X,
+      },
     );
   }
 
@@ -255,10 +264,8 @@ class Editor extends Component {
   render() {
     return (
       <section className="application-container">
-        <SideBar actions={this.sideBarActions} />
+        <SideBar actions={this.sideBarActions} paths={this.state.pathString} />
         <section className="application">
-          <Title title="$PATH Editor" />
-          <CharacterCount chars={this.state.pathString.length} />
           <PathList paths={this.state.pathObject} change={this.onInput} submit={this.onSubmit} />
         </section>
       </section>

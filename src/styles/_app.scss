@@ -4,8 +4,8 @@ html {
   width: 100%;
   height: 100%;
   font-size: 16px;
-  color: #f7f7f7;
-  background-color: #232323;
+  color: $body-text;
+  background-color: $bg-color;
 }
 
 * {
@@ -25,20 +25,121 @@ body {
   font-family: system, -apple-system, ".SFNSText-Regular", "San Francisco", "Roboto", "Segoe UI", "Helvetica Neue", "Lucida Grande", sans-serif;
 }
 
+#main {
+  padding-bottom: 20px;
+}
+
 .application {
-  padding-left: 15%;
+  padding-left: 12%;
 
   &-container {
     width: 100%;
     position: relative;
   }
 
+  &-title {
+    width: 100%;
+    padding: 0;
+    margin: 0 0 30px;
+    font-size: 30px;
+    text-align: center;
+  }
+
   &-sidebar {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 15%;
-    padding: 20px;
+    top: 20px;
+    left: 20px;
+    width: 9%;
+
+    &-action {
+      display: block;
+      position: relative;
+      width: 100%;
+      padding: 20px 10px;
+      margin: 0 0 5px;
+      border: none;
+      color: $body-text;
+      background-color: $action-button-rgba--inactive;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover,
+      &:focus {
+        background-color: $action-button-rgba--active;
+
+        .application-sidebar-action-text {
+          opacity: 1.0;
+        }
+      }
+
+      .application-icon {
+        display: block;
+        width: 60%;
+        height: 60%;
+        margin: 0 auto 15px;
+
+        > path {
+          fill: $body-text;
+        }
+      }
+
+      &-text {
+        display: block;
+        position: absolute;
+        left: 50%;
+        bottom: 10px;
+        margin-top: 5px;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: all 0.3s ease;
+      }
+    }
+  }
+
+
+  &-character-count {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 9%;
+    padding: 10px;
+    text-align: center;
+
+    &--ok {
+      background-color: $char-count-ok-rgba--inactive;
+
+      &:hover {
+        background-color: $char-count-ok-rgba--active;
+      }
+
+      .application-icon {
+        margin-top: -5px;
+      }
+    }
+
+    &--too-many-chars {
+      background-color: $char-count-bad-rgba--inactive;
+
+      &:hover {
+        background-color: $char-count-bad-rgba--active;
+      }
+
+      .application-icon {
+        margin-top: -2px;
+      }
+    }
+
+    .application-icon {
+      width: 25%;
+      height: 25%;
+      vertical-align: middle;
+      margin-left: -5px;
+
+      > path {
+        fill: $body-text;
+      }
+    }
   }
 }
 
@@ -59,7 +160,7 @@ body {
       &-input {
         width: 100%;
         padding: 10px 58px 10px 10px;
-        border: 1px solid #ccc;
+        border: 1px solid $developer-gray;
       }
 
       &-button {
@@ -68,19 +169,31 @@ body {
         width: 48px;
         height: 100%;
         border: none;
-        font-weight: bold;
-        line-height: 40px;
         text-align: center;
         vertical-align: middle;
-        opacity: 0.6;
-        color: #f7f7f7;
-        background-color: red;
+        color: $body-text;
+        background-color: $delete-button-rgba--inactive;
         cursor: pointer;
+        opacity: 0.6;
         transition: all 0.3s ease;
 
         &:focus,
         &:hover {
+          background-color: $delete-button-rgba--active;
           opacity: 1.0;
+        }
+
+        .application-icon {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 60%;
+          height: 60%;
+          transform: translate(-50%, -50%);
+
+          > path {
+            fill: $body-text;
+          }
         }
       }
     }
