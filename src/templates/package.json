@@ -1,0 +1,61 @@
+{
+  "name": "windows-path-editor",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sane $PATH editing for Windows",
+  "keywords": [
+    "$PATH",
+    "Windows",
+    "$PATH Editor"
+  ],
+  "homepage": "https://github.com/ericrallen/windows-path-editor",
+  "bugs": "https://github.com/ericrallen/windows-path-editor/issues",
+  "author": "ericrallen",
+  "main": "window.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ericrallen/windows-path-editor"
+  },
+  "scripts": {
+    "clean": "cross-conf-env del-cli --force ../dist/npm_package_version",
+    "package:osx": "cross-conf-env electron-packager . npm_package_electron_appName --platform=darwin --arch=x64 --asar --out=\"../dist/npm_package_version\" --app-version=npm_package_version --app-copyright=npm_package_electron_appCopyright --app-bundle-id=npm_package_electron_appBundleId --app-helper-id=npm_package_electron_appBundleId --app-categoy-type=npm_package_electron_appCategoyType",
+    "package:win": "cross-conf-env electron-packager . npm_package_electron_appName --platform=win32 --arch=all --asar --out=\"../dist/npm_package_version\" --app-version=npm_package_version --app-copyright=npm_package_electron_appCopyright --version-string.CompanyName=npm_package_electron_versionString_companyName --version-string.ProductName=npm_package_electron_versionString_productName --icon=external/terminal.ico",
+    "package:linux": "cross-conf-env electron-packager . npm_package_electron_appName --platform=linux --arch=all --asar --out=\"../dist/npm_package_version\" --app-version=npm_package_version --app-copyright=npm_package_electron_appCopyright --version-string.CompanyName=npm_package_electron_versionString_companyName",
+    "package:all": "npm run package:win",
+    "package": "npm run clean && npm run package:all"
+  },
+  "devDependencies": {
+    "electron-packager": "^8.5.1",
+    "electron-prebuilt": "^1.4.13",
+    "del-cli": "0.2.1",
+    "cross-conf-env": "1.1.2"
+  },
+  "dependencies": {
+    "electron": "^1.4.15",
+    "es6-promise": "^4.0.5",
+    "hapi": "^16.1.0",
+    "inert": "^4.1.0",
+    "joi": "^10.2.2",
+    "open": "0.0.5",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-router": "^3.0.2",
+    "shelljs": "^0.7.6",
+    "uuid-lib": "0.0.6"
+  },
+  "engines": {
+    "node": ">=5.x.x",
+    "npm": ">=3.x.x"
+  },
+  "electron": {
+    "appName": "$PATH Editor",
+    "appCopyright": "Copyright 2017 Interweb Alchemy",
+    "appBundleId": "com.interwebalchemy.$path-editor" ,
+    "appCategoryType": "public.app-category.utilities",
+    "helperBundleId": "com.interwebalchemy.$path-editor-helper",
+    "versionString": {
+      "companyName": "Interweb Alchemy",
+      "productName": "$PATH Editor"
+    }
+  }
+}
