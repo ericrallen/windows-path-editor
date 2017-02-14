@@ -43,4 +43,13 @@ in the $PATH. It gets your $PATH by running `set` and sets your $PATH by running
 **NOTE**: You must reboot for the $PATH change to take effect. (*There is a button
 in the app that will trigger a reboot for you.*)
 
+## Roadmap
 
+- Integrate undo/redo functionality for stepping through $PATH changes
+- Support exporting $PATH to a string that can be copied+pasted into typical $PATH
+editing interface
+- Make list scroll to bottom when using the Add button
+- Better animations for add/remove
+- Add interaction to character count that explains what it means
+- Add tooltip popup when exceeding character limit
+- Explore ways to pull SYSTEM $PATH items out of the $PATH
