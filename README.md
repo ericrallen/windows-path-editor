@@ -1,6 +1,6 @@
 # Windows $PATH Editor
 
-![$PATH Editor Demo](external/path-editor.gif)
+![$PATH Editor Demo](src/external/path-editor.gif)
 
 After getting fed up with trying to manage my $PATH in Windows, I decided to build
 a basic Electron app for editing it.
