@@ -31,7 +31,7 @@
     "cross-conf-env": "1.1.2"
   },
   "dependencies": {
-    "electron": "^1.4.15",
+    "electron": "^9.1.0",
     "es6-promise": "^4.0.5",
     "hapi": "^16.1.0",
     "inert": "^4.1.0",
